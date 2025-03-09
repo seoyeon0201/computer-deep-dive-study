@@ -19,11 +19,15 @@
 | [권시경](https://github.com/kweonsikyung) | [김민우](https://github.com/KimMinWoooo) | [박지혜(스터디장)](https://github.com/jeeheaG) | [이승연](https://github.com/tmddus2) | [임예준](https://github.com/dpwns523) | [임수현(스터디장)](https://github.com/suhyenim) | [장지원](https://github.com/yucori) |
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
 | ![권시경](https://github.com/kweonsikyung.png) | ![김민우](https://github.com/KimMinWoooo.png) | ![박지혜(스터디장)](https://github.com/jeeheaG.png) | ![이승연](https://github.com/tmddus2.png) | ![임예준](https://github.com/dpwns523.png) | ![임수현(스터디장)](https://github.com/suhyenim.png) | ![장지원](https://github.com/yucori.png) |
- 
 
+## 4. 📏 GitHub Collaboration Guidelines
 
+1. `computer-deep-dive-study` 레포를 fork한다.
+2. fork한 레포에서 `week1` 브랜치를 생성한다.
+3. `./week1/{영어이름}` 폴더를 생성한 후 해당 주차에 공부한 내용을 커밋한다.
+4. PR 템플릿에 따라 PR을 작성한다.
 
-## 4. ⛳ Curriculum
+## 5. ⛳ Curriculum
 
 | 주차 | 주제 | 세부 내용 |
 | --- | --- | --- |
@@ -35,14 +39,6 @@
 | **Week 6** | **4장 CPU (80p)** | 4.1 이 작은 장난감을 CPU라고 부른다<br>4.2 CPU는 유휴 상태일 때 무엇을 할까?<br>4.3 CPU는 숫자를 어떻게 인식할까?<br>4.4 CPU가 if문을 만났을 때<br>4.5 CPU 코어 수와 스레드 수 사이의 관계는 무엇일까?<br>4.6 CPU 진화론(상): 복잡 명령어 집합의 탄생<br>4.7 CPU 진화론(중): 축소 명령어 집합의 탄생<br>4.8 CPU 진화론(하): 절체절명의 위기에서 반격<br>4.9 CPU, 스택과 함수 호출, 시스템 호출, 스레드 전환, 인터럽트 처리 통달하기 |
 | **Week 7** | **5장 캐시 (60p)** | 5.1 캐시, 어디에나 존재하는 것<br>5.2 어떻게 캐시 친화적인 프로그램을 작성할까?<br>5.3 다중 스레드 성능 방해자<br>5.4 봉화희제후와 메모리 장벽 |
 | **Week 8** | **6장 입출력 (50p) + 회고** | ⭐ 블로그 글 등의 결과물 남겨보기<br>6.1 CPU는 어떻게 입출력 작업을 처리할까?<br>6.2 디스크가 입출력을 처리할 때 CPU가 하는 일은 무엇일까?<br>6.3 파일을 읽을 때 프로그램에는 어떤 일이 발생할까?<br>6.4 높은 동시성의 비율: 입출력 다중화<br>6.5 mmap: 메모리 읽기와 쓰기 방식으로 파일 처리하기<br>6.6 컴퓨터 시스템의 각 부분에서 얼마큼 지연이 일어날까? |
-
-
-## 5. 📏 GitHub Collaboration Guidelines
-
-1. `computer-deep-dive-study` 레포를 fork한다.
-2. fork한 레포에서 `week1` 브랜치를 생성한다.
-3. `./week1/{영어이름}` 폴더를 생성한 후 해당 주차에 공부한 내용을 커밋한다.
-4. PR 템플릿에 따라 PR을 작성한다.
 
 ## 6. 📑 References
 
