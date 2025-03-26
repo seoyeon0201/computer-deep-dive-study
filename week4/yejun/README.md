@@ -159,3 +159,99 @@ ___
 여러 요청은 전부 파일로 취급되어 동시에 여러 사용자 요청이 들어오면 다중 파일 처리를 한 번에 하는 방법이 필요
 
 => 입출력 다중화 기술로 해결
+
+![image](https://github.com/user-attachments/assets/83415b86-765d-4a78-a858-8ffb2857944a)
+
+
+- 운영체제에 ‘소켓 디스크립터 열개 감시하고 있다가 데이터가 들어오면 알려줘’ 라는 내용 전달하는 작동 방식 => 입출력 다중화
+- 입출력 다중화는 이벤트 순환 엔진이 된다
+- 리눅스에서 유명한 것이 epoll
+___
+### 문제2 - 이벤트 순환과 다중 스레드
+
+![image](https://github.com/user-attachments/assets/a62d1e58-53ba-4664-846e-bf64507409a1)
+
+이벤트 핸들러에서 입출력 작업이 없고 처리시간이 짧을 때
+
+=> 이벤트 순환과 이벤트 핸들러가 같은 스레드에서 실행되도 문제 없음
+
+하지만 사용자 요청을 처리하는데 cpu가 많은 시간을 소모한다면 => 요청A를 처리하는 중에 요청 B를 처리할 수 없음
+
+![image](https://github.com/user-attachments/assets/f0a72f75-19d6-469d-a9f1-2aaa5a563405)
+
+- 이벤트 순환과 이벤트 핸들러가 다른 스레드
+- 요청 처리속도를 높이고 다중 코어 최대한 활용
+- 이벤트 순환은 요청을 수신하면 간단한 처리 후 바로 각각의 작업자 스레드에 분배
+- 작업자 스레드를 스레드 풀로 관리 가능
+
+=> 이 설계 방법은 반응자 패턴
+
+___
+
+### 비동기와 콜백 함수
+
+```
+void handler(request) {
+    A;
+    B;
+    GetUserInfo(request, response);  // 서버 A에 요청
+    C;
+    D;
+    GetQueryInfo(request, response); // 서버 B에 요청
+    E;
+    F;
+    GetStorkInfo(request, response); // 서버 C에 요청
+    G;
+    H;
+}
+```
+- Get으로 시작하는 RPC호출은 모두 블로킹 호출이기 때문에 사용자가 응답하기 전에는 함수가 반환되지 않음
+- 블로킹 호출이기 때문에 스레드가 일시중지 될 수 있고 블로킹 호출이 여러번 발생하면 스레드 빈번하게 중단되어 cpu 비효율적임
+
+동기 방식의 RPC 호출을 비동기 호출로 바꾸기
+```
+void handler_after_GetStorkInfo(response) {
+    G;
+    H;
+}
+
+void handler_after_GetQueryInfo(response) {
+    E;
+    F;
+    GetStorkInfo(request, handler_after_GetStorkInfo); // 서버 C에 요청
+}
+
+void handler_after_GetUserInfo(response) {
+    C;
+    D;
+    GetQueryInfo(request, handler_after_GetQueryInfo); // 서버 B에 요청
+}
+
+void handler(request) {
+    A;
+    B;
+    GetUserInfo(request, handler_after_GetUserInfo);   // 서버 A에 요청
+}
+```
+
+- 주 프로세스는 네 개로 분할되었고 콜백안에 콜백에 포함되게 됨
+
+사용자 서비스가 더 많아지면 이런 형태의 코드는 관리가 불가능
+
+=> 코드가 점점 길어질거고 콜백 지옥으로 빠질 것임
+___
+### 코루틴: 동기 방식의 비동기 프로그래밍
+
+
+
+#### 코루틴 작동 방식
+
+![image](https://github.com/user-attachments/assets/72cae9f6-ac63-47ef-b9bf-3945489b3c4a)
+
+- 코루틴이 일시중지 (I/O 등의 작업 대기 상태)
+  - 작업자 스레드는 준비 완료된 다른 코루틴을 실행하기 위해 전환
+  - 일시 중지된 코루틴에 할당된 사용자 서비스가 응답한 후 그 처리결과를 반환
+  - 다시 준비 상태가 되어 스케줄링 상태가 돌아오길 기다림
+  - 이후 코루틴은 마지막으로 중지되었던 곳에서 이어서 계속 실행됨
+- 코루틴의 도움으로 동기 방식 프로그래밍하더라도 비동기 실행과 같은 효과를 얻을 수 있게됨
+
